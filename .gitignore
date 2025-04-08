@@ -1,0 +1,15 @@
+# Ignore Python environment
+venv/
+__pycache__/
+
+# Ignore output files
+officer_photos/
+club_contacts.csv
+officers.html
+
+# Ignore WebDriver binary
+msedgedriver.exe
+edgedriver_win64/
+
+# Ignore Office/Editor files
+.DS_Store
