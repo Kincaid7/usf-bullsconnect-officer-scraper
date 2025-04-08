@@ -1,5 +1,6 @@
 Officer Contact Scraper & Google Contacts Importer
 This tool allows you to scrape officer contact data from BullsConnect, generate a clean HTML directory, and prepare a CSV file suitable for import into Google Contacts. Officer profile images are also downloaded and stored locally.
+NOTE: This program was designed for use by The European Society at USF. Labels generated in the CSV are done with that use-case in mind. You will have to tweak both the labels generated, as well as the links to the officer pages to reflect the use case you intend. ChatGPT should be able to hold your hand through such modifications.
 ________________________________________
 🚀 Setup Instructions (Baby-Proofed)
 1. Install Python (If Not Already Installed)
