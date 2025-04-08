@@ -60,6 +60,7 @@ club_urls = [
 ]
 
 all_officers = []
+club_links = {}  # maps club name to their page URL
 
 # === SCRAPE EACH CLUB ===
 for url in club_urls:
@@ -82,7 +83,10 @@ for url in club_urls:
 
     # Get club name
     club_name_tag = soup.select_one("div.feed__top-title__name span")
+    club_url = driver.current_url.replace("&tab=officers", "&tab=about")  # grab the about page URL
     club_name = club_name_tag.get_text(strip=True) if club_name_tag else "Unknown Club"
+
+    club_links[club_name] = club_url  # NEW dictionary you'll define earlier
 
     # Get club logo
     club_logo_tag = soup.select_one("div.feed__top-title__img img")
@@ -270,12 +274,29 @@ html_content = """
             width: 80px;
             height: 80px;
             border-radius: 50%;
-            object-fit: cover;
+            object-fit: cover;d
             margin-bottom: 10px;
         }
         .name { font-weight: bold; font-size: 18px; }
         .position { color: #00703C; font-weight: 600; }
         .email { color: #444; font-size: 14px; }
+        .email-link {
+            color: #444;
+            text-decoration: none;
+        }
+
+        .email-link:hover {
+            text-decoration: underline;
+        }
+
+	.club-link {
+            text-decoration: none;
+            color: inherit;
+        }
+        .club-link:hover {
+            text-decoration: underline;
+        }
+
     </style>
 </head>
 <body>
@@ -317,14 +338,19 @@ for club, officers in grouped.items():
     if officers:
         logo = club_logos.get(club, "")
         logo_html = f'<img src="{logo}" class="logo" alt="{club} logo">' if logo else ""
-        html_content += f"<h2>{logo_html} {club}</h2>\n<div class='grid'>\n"
+        club_url = club_links.get(club, "#")
+        html_content += f"<h2><a href=\"{club_url}\" target=\"_blank\" class=\"club-link\">{logo_html} {club}</a></h2>\n<div class='grid'>\n"
+
         for officer in officers:
             html_content += f"""
             <div class=\"card\">
                 <img src=\"{officer['img']}\" alt=\"{officer['name']}\" class=\"profile\">
                 <div class=\"name\">{officer['name']}</div>
                 <div class=\"position\">{officer['position']}</div>
-                <div class=\"email\">{officer['email']}</div>
+                <div class=\"email\">
+                    <a href=\"mailto:{officer['email']}\" class=\"email-link\">{officer['email']}</a>
+                </div>
+
             </div>
             """
         html_content += "</div>\n"
